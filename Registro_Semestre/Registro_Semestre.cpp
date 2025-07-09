@@ -2,17 +2,19 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <Windows.h>
 using namespace std;
+
 struct Registro {
-    string nombre_estudiante;//el nombre del estudiante será 
-    //tomado de manera 
-    //aleatoria de una lista de 10 nombres
+    string nombre_estudiante;
     string asignatura;
-    float nota[4];//La nota tiene 4 componentes, el primero sobre 20 
-    //puntos, el segundo sobre 20, el tercero y cuarto    //sobre 30 cada uno. 
-    bool activo; // Indica si el registro está activo (true) 
-    // o fue eliminado (false)
+    float nota[4];
+    bool activo;
 };
+
+const int num_estudiantes = 10;
+const int semestres = 6;
+Registro registros[num_estudiantes][semestres];
 
 const string alumnos[10] = {
         "Luis Fernandez",
@@ -47,10 +49,6 @@ bool existeEnMatriz(Registro registros[], int semestres, const string& materia) 
 
 void registrar_notas() {
     srand(time(NULL));
-    const int num_estudiantes = 10;
-    const int semestres = 6;
-    Registro registros[num_estudiantes][semestres];
-
     for (int i = 0; i < num_estudiantes; i++) {
         string nombre = alumnos[rand() % 10];
         for (int j = 0; j < semestres; j++) {
@@ -102,22 +100,24 @@ void mostrar_notas() {
 
 int main()
 {
-    int opcion;
-    cout << "Bienvenido al Registro de notas de estudiantes \n";
-    cout << "Que desea realizar? \n";
-	cout << "1. Crear notas de estudiantes\n";
-    cout << "2. Mostrar notas de estudiantes\n";
-    cout << "3. Editar el registro de un estudiante \n";
-    cout << "4. Eliminar el registro de un estudiante \n";
-	cout << "5. Salir del programa \n"; 
-    cin >> opcion;
+    do {
+        int verNotas;
+        int opcion;
+        cout << "Bienvenido al Registro de notas de estudiantes \n";
+        cout << "Que desea realizar? \n";
+        cout << "1. Crear notas de estudiantes\n";
+        cout << "2. Mostrar notas de estudiantes\n";
+        cout << "3. Editar el registro de un estudiante \n";
+        cout << "4. Eliminar el registro de un estudiante \n";
+        cout << "5. Salir del programa \n";
+        cin >> opcion;
 
-    switch (opcion) {
+        switch (opcion) {
         case 1:
             cout << "Creando notas a los estudiante aleatoriamente...\n";
             registrar_notas();
-			sleep(2000); // Simula un tiempo de espera para la creación de notas
-			cout << "Notas creadas exitosamente.\n";
+            Sleep(2000); // Simula un tiempo de espera para la creación de notas
+            cout << "Notas creadas exitosamente.\n";
             break;
         case 2:
             mostrar_notas();
@@ -129,10 +129,11 @@ int main()
             cout << "Funcionalidad de eliminar registro no implementada.\n";
             break;
         case 5:
-			cout << "Saliendo del programa. ¡Hasta luego!\n";
-			return 0;
-			break;
+            cout << "Saliendo del programa. Vuelve Luego!\n";
+            return 0;
+            break;
         default:
-			cout << "Opción no válida. Por favor, intente de nuevo.\n";
-    }
+            cout << "Opción no válida. Por favor, intente de nuevo.\n";
+        }
+    } while (true);
 }
