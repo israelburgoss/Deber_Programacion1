@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <windows.h>
 using namespace std;
 struct Registro {
     string nombre_estudiante;//el nombre del estudiante será 
@@ -50,7 +51,6 @@ void registrar_notas() {
     const int num_estudiantes = 10;
     const int semestres = 6;
     Registro registros[num_estudiantes][semestres];
-
     for (int i = 0; i < num_estudiantes; i++) {
         string nombre = alumnos[rand() % 10];
         for (int j = 0; j < semestres; j++) {
@@ -71,6 +71,9 @@ void registrar_notas() {
 }
 
 void mostrar_notas() {
+    const int num_estudiantes = 10;
+    const int semestres = 6;
+    Registro registros[num_estudiantes][semestres];
     cout << "Registro de Notas de Estudiantes:\n\n";
     cout << "=== REGISTROS ===\n";
     for (int i = 0; i < num_estudiantes; i++) {
@@ -116,7 +119,7 @@ int main()
         case 1:
             cout << "Creando notas a los estudiante aleatoriamente...\n";
             registrar_notas();
-			sleep(2000); // Simula un tiempo de espera para la creación de notas
+			Sleep(2000); // Simula un tiempo de espera para la creación de notas
 			cout << "Notas creadas exitosamente.\n";
             break;
         case 2:
