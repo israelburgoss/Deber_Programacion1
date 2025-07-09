@@ -101,6 +101,29 @@ void registrar_notas() {
 
 int main()
 {
-	registrar_notas();
-	return 0;
+    int opcion;
+    cout << "Bienvenido al Registro de notas de estudiantes \n";
+    cout << "Que desea realizar? \n";
+	cout << "1. Registrar notas de estudiantes\n";
+    cout << "2. Modificar notas de estudiantes\n";
+    cout << "3. Eliminar el registro de un estudiante \n";
+    cout << "4. salir \n";
+    cin >> opcion;
+
+    switch (opcion) {
+        case 1:
+            registrar_notas();
+            break;
+        case 2:
+            cout << "Funcionalidad de modificar notas no implementada.\n";
+            break;
+        case 3:
+            cout << "Funcionalidad de eliminar registro no implementada.\n";
+            break;
+        case 4:
+            cout << "Saliendo del programa...\n";
+            break;
+        default:
+			cout << "Opción no válida. Por favor, intente de nuevo.\n";
+    }
 }
