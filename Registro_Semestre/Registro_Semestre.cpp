@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <Windows.h>
+#include <stdlib.h>
+#include <conio.h>
 using namespace std;
 
 struct Registro {
@@ -19,7 +21,7 @@ Registro registros[num_estudiantes][semestres];
 const string alumnos[10] = {
         "Luis Fernandez",
         "Joel Montenegro",
-        "Raúl Villalobos",
+        "Raul Villalobos",
         "Omar Maldonado",
         "Hugo Barrientos",
         "Noel Santillana",
@@ -53,8 +55,6 @@ void registrar_notas() {
         string nombre = alumnos[rand() % 10];
         for (int j = 0; j < semestres; j++) {
             registros[i][j].nombre_estudiante = nombre;
-
-            // Evitar materias repetidas en la fila del estudiante
             do {
                 registros[i][j].asignatura = materias[rand() % 6];
             } while (existeEnMatriz(registros[i], j, registros[i][j].asignatura));
@@ -75,23 +75,24 @@ void mostrar_notas() {
         cout << "-------------------------\n";
         cout << "Estudiante: " << registros[i][0].nombre_estudiante << endl;
         for (int j = 0; j < semestres; j++) {
-            cout << "  Semestre " << j + 1 << ": ";
-            cout << "Asignatura: " << registros[i][j].asignatura << endl;
-
+            cout << "  Semestre " << j + 1 << ": " << "| Asignatura: " << registros[i][j].asignatura << "| Notas del Semestre: " << " ";
             for (int k = 0; k < 4; k++) {
                 cout << registros[i][j].nota[k] << " ";
             }
-            cout << "| Estado: " << (registros[i][j].activo ? "Activo" : "Inactivo") << endl;
 
             int promedio = registros[i][j].nota[0] + registros[i][j].nota[1]
                 + registros[i][j].nota[2] + registros[i][j].nota[3];
 
-            cout << "Promedio: " << promedio << endl;
             if (promedio >= 70) {
-                cout << "Estado: Aprobado\n";
+                if (registros[i][j].activo) {
+                    cout << "| Promedio: " << promedio << "| Estado: Aprobado" << " | Estado: Activo" << " \n";
+                }
+                else {
+                    cout << "| Promedio: " << promedio << "| Estado: Aprobado" << " | Estado: Inactivo" << " \n";
+				}
             }
             else {
-                cout << "Estado: Reprobado\n";
+                cout << "| Promedio: " << promedio << "| Estado: Reprobado" << "| Estado: " << (registros[i][j].activo ? "Activo" : "Inactivo") << " \n";
             }
         }
         cout << "-------------------------\n\n";
@@ -100,9 +101,11 @@ void mostrar_notas() {
 
 int main()
 {
+    int verNotas;
+    int opcion;
+    bool seCreoNotas = false;
+
     do {
-        int verNotas;
-        int opcion;
         cout << "Bienvenido al Registro de notas de estudiantes \n";
         cout << "Que desea realizar? \n";
         cout << "1. Crear notas de estudiantes\n";
@@ -114,13 +117,32 @@ int main()
 
         switch (opcion) {
         case 1:
+			system("cls");
             cout << "Creando notas a los estudiante aleatoriamente...\n";
             registrar_notas();
             Sleep(2000); // Simula un tiempo de espera para la creación de notas
             cout << "Notas creadas exitosamente.\n";
+            seCreoNotas = true;
+            Sleep(3000);
+            system("cls");
             break;
         case 2:
-            mostrar_notas();
+            if (seCreoNotas == true) {
+				system("cls");
+                mostrar_notas();
+                cout << "Presione cualquier tecla para limpiar la pantalla..." << endl;
+                if (_kbhit()) {
+                    _getch(); // Captura la tecla presionada
+                    system("cls");
+                }
+            }
+            else {
+                system("cls");
+                cout << "Primero debe generar una nota" << endl;
+                Sleep(2000);
+				system("cls");
+            }
+            
             break;
         case 3:
             cout << "Funcionalidad de eliminar registro no implementada.\n";
