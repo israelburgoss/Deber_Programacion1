@@ -5,7 +5,7 @@
 using namespace std;
 struct Registro {
     string nombre_estudiante;//el nombre del estudiante será 
-    ///tomado de manera 
+    //tomado de manera 
     //aleatoria de una lista de 10 nombres
     string asignatura;
     float nota[4];//La nota tiene 4 componentes, el primero sobre 20 
@@ -68,7 +68,9 @@ void registrar_notas() {
             registros[i][j].activo = true;
         }
     }
+}
 
+void mostrar_notas() {
     cout << "Registro de Notas de Estudiantes:\n\n";
     cout << "=== REGISTROS ===\n";
     for (int i = 0; i < num_estudiantes; i++) {
@@ -98,31 +100,38 @@ void registrar_notas() {
     }
 }
 
-
 int main()
 {
     int opcion;
     cout << "Bienvenido al Registro de notas de estudiantes \n";
     cout << "Que desea realizar? \n";
-	cout << "1. Registrar notas de estudiantes\n";
-    cout << "2. Modificar notas de estudiantes\n";
-    cout << "3. Eliminar el registro de un estudiante \n";
-    cout << "4. salir \n";
+	cout << "1. Crear notas de estudiantes\n";
+    cout << "2. Mostrar notas de estudiantes\n";
+    cout << "3. Editar el registro de un estudiante \n";
+    cout << "4. Eliminar el registro de un estudiante \n";
+	cout << "5. Salir del programa \n"; 
     cin >> opcion;
 
     switch (opcion) {
         case 1:
+            cout << "Creando notas a los estudiante aleatoriamente...\n";
             registrar_notas();
+			sleep(2000); // Simula un tiempo de espera para la creación de notas
+			cout << "Notas creadas exitosamente.\n";
             break;
         case 2:
-            cout << "Funcionalidad de modificar notas no implementada.\n";
+            mostrar_notas();
             break;
         case 3:
             cout << "Funcionalidad de eliminar registro no implementada.\n";
             break;
         case 4:
-            cout << "Saliendo del programa...\n";
+            cout << "Funcionalidad de eliminar registro no implementada.\n";
             break;
+        case 5:
+			cout << "Saliendo del programa. ¡Hasta luego!\n";
+			return 0;
+			break;
         default:
 			cout << "Opción no válida. Por favor, intente de nuevo.\n";
     }
