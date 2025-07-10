@@ -1,0 +1,26 @@
+# Visual Studio
+.vs/
+*.ipch
+*.obj
+*.exe
+*.dll
+*.pdb
+*.cache
+*.log
+*.user
+*.suo
+
+# Archivos binarios y temporales
+bin/
+Debug/
+Release/
+
+# Otros archivos no deseados
+*.tmp
+*.temp
+
+# Carpeta de salida y build
+out/
+
+
+
