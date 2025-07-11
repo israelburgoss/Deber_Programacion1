@@ -129,89 +129,199 @@ void mostrar_notas() {
 }
 
 void editar() {
-    int materiaSeleccionada;
-    int notaNueva;
     int opcion_editar;
-    int notaSeleccionada;
-    string nombre = alumnos[estudianteSeleccionado];
-    // Esta funcion vamos a implementarla para cambiar las notas y las materias que deseemos
-    cout << "Editar de registro del estudiante \n";
-    cout << "Nombre del estudiante: " << nombre << endl;
-    cout << "Que desea modificar? \n";
-    cout << "1. Modificar notas \n";
-    cout << "2. Modificar materias \n";
-    cout << "3. Volver al menu principal \n";
-    cin >> opcion_editar;
-    switch (opcion_editar) {
-    case 1: {
-        int semestre;
-        cout << "Ingrese el semestre que desea modificar (1-" << semestres << "): ";
-        cin >> semestre;
-        if (semestre < 1 || semestre > semestres) {
-            cout << "Semestre no valido.\n";
-            return;
-        }
-        cout << "Cual de las 4 notas desea cambiar (1-4)? ";
-        cin >> notaSeleccionada;
-        if (notaSeleccionada < 1 || notaSeleccionada > 4) {
-            system("cls");
-            cout << "Nota no valida. \n";
-            Sleep(1200);
-            system("cls");
-            return;
-        }
-        cout << "Nota seleccionada: " << registros[estudianteSeleccionado][semestre - 1].nota[notaSeleccionada - 1] << endl;
-        cout << "Ingrese la nueva nota: ";
-        cin >> notaNueva;
-        if (notaSeleccionada == 1 || notaSeleccionada == 2 && notaNueva > 20) {
-            system("cls");
-            cout << "Nota no valida. Debe ser entre 0 y 20. \n";
-            Sleep(1200);
-            system("cls");
-        }
-        else if (notaSeleccionada == 3 || notaSeleccionada == 4 && notaNueva > 30) {
-            system("cls");
-            cout << "Nota no valida. Debe ser entre 0 y 30. \n";
-            Sleep(1200);
-        }
-        else {
+    do {
+        system("cls");
+        cout << "Editar registro del estudiante \n";
+        cout << "Nombre del estudiante: " << alumnos[estudianteSeleccionado] << endl;
+        cout << "Que desea modificar? \n";
+        cout << "1. Modificar notas \n";
+        cout << "2. Modificar materias \n";
+        cout << "3. Volver al menu principal \n";
+        cout << "Ingrese la opcion que desea: ";
+        cin >> opcion_editar;
+        
+
+        // Declarar materiaValida aquí, antes del switch
+        bool materiaValida = false;
+
+        switch (opcion_editar) {
+        case 1: {
+            int semestre, notaSeleccionada, notaNueva;
+
+            // Validar semestre
+            do {
+                system("cls");
+                cout << "Ingrese el semestre que desea modificar (1-" << semestres << "): ";
+                cin >> semestre;
+
+                if (semestre < 1 || semestre > semestres) {
+                    cout << "Semestre no valido. Intente de nuevo.\n";
+                    Sleep(1200);
+					system("cls");
+                    continue;
+                }
+            } while (semestre < 1 || semestre > semestres);
+
+            // Validar nota a modificar
+            do {
+                cout << "Cual de las 4 notas desea cambiar? (1-4): ";
+                cin >> notaSeleccionada;
+
+                if (notaSeleccionada < 1 || notaSeleccionada > 4) {
+                    cout << "Nota no valida.\n";
+                    Sleep(1200);
+					system("cls");
+                    continue;
+                }
+            } while (notaSeleccionada < 1 || notaSeleccionada > 4);
+
+            // Pedir nueva nota hasta que esté en rango correcto
+            bool notaValida = false;
+            do {
+                cout << "Nota actual: "
+                    << registros[estudianteSeleccionado][semestre - 1].nota[notaSeleccionada - 1] << endl;
+
+                cout << "Ingrese la nueva nota: ";
+                cin >> notaNueva;
+
+                if ((notaSeleccionada <= 2 && (notaNueva < 0 || notaNueva > 20)) ||
+                    (notaSeleccionada >= 3 && (notaNueva < 0 || notaNueva > 30))) {
+                    cout << "Nota no valida. Rango incorrecto.\n";
+					system("cls");
+                    Sleep(1200);
+                    continue;
+                }
+                else {
+                    notaValida = true;
+                }
+
+            } while (!notaValida);
+
             registros[estudianteSeleccionado][semestre - 1].nota[notaSeleccionada - 1] = notaNueva;
             cout << "Nota actualizada exitosamente.\n";
+            Sleep(1200);
+			system("cls");
+            break;
         }
-        break;
-    }
-    case 2: {
-        cout << "Que materia desea cambiar?\n";
-        for (int j = 0; j < semestres; j++) {
-            cout << j + 1 << ". " << registros[estudianteSeleccionado][j].asignatura << endl;
+        case 2: {
+            int semestreSeleccionado, nuevaMateria;
+            do {
+                system("cls");
+                cout << "Seleccione el semestre (1-" << semestres << "): ";
+                cin >> semestreSeleccionado;
+
+                if (semestreSeleccionado < 1 || semestreSeleccionado > semestres) {
+                    cout << "Semestre no valido. Intente de nuevo.\n";
+                    Sleep(1200);
+					system("cls");
+                }
+            } while (semestreSeleccionado < 1 || semestreSeleccionado > semestres);
+
+            materiaValida = false; // Usar la variable declarada arriba
+            do {
+                cout << "Semestre " << semestreSeleccionado
+                    << ", Materia actual: "
+                    << registros[estudianteSeleccionado][semestreSeleccionado - 1].asignatura << endl;
+
+                cout << "Materias Disponibles:\n";
+                for (int i = 0; i < 10; i++) {
+                    cout << i + 1 << ". " << materias[i] << endl;
+                }
+
+                cout << "Ingrese la nueva materia: ";
+                cin >> nuevaMateria;
+
+                if (nuevaMateria < 1 || nuevaMateria > 10) {
+                    cout << "Materia no valida. Debe ser entre 1 y 10.\n";
+                    Sleep(1200);
+					system("cls");
+                    continue;
+                }
+
+                if (materia_ya_escogida(registros[estudianteSeleccionado], semestres, materias[nuevaMateria - 1])) {
+                    cout << "La materia ya fue seleccionada. Elija otra.\n";
+                    Sleep(1200);
+					system("cls");
+                    continue;
+                }
+
+                registros[estudianteSeleccionado][semestreSeleccionado - 1].asignatura = materias[nuevaMateria - 1];
+                cout << "Materia actualizada exitosamente: " << materias[nuevaMateria - 1] << endl;
+                cout << "Presione cualquier tecla para continuar...\n";
+                _getch();
+				system("cls");
+                materiaValida = true;
+            } while (!materiaValida);
+            break;
         }
-        cout << "Ingrese el numero de la materia: ";
-        cin >> materiaSeleccionada;
-        if (materiaSeleccionada < 1 || materiaSeleccionada > semestres) {
-            cout << "Materia no valida.\n";
+        case 3: {
+            system("cls");
+            cout << "Volviendo al menu principal...\n";
+            Sleep(1200);
+			system("cls");
             return;
         }
-        cout << "Ingrese la nueva materia: ";
-        string nuevaMateria;
-        cin.ignore();
-        getline(cin, nuevaMateria);
-        if (materia_ya_escogida(registros[estudianteSeleccionado], semestres, nuevaMateria)) {
-            cout << "La materia ya fue seleccionada. Elija otra.\n";
-            return;
+        default: {
+            system("cls");
+            cout << "Opcion no valida. Por favor, intente de nuevo.\n";
+            Sleep(1200);
+            cout << "Presione cualquier tecla para continuar...\n";
+            _getch();
+            system("cls");
+            continue;
         }
-        registros[estudianteSeleccionado][materiaSeleccionada - 1].asignatura = nuevaMateria;
-        cout << "Materia actualizada exitosamente.\n";
-        break;
-    }
-    case 3: {
+        }
+    } while (true);
+}
+   
+
+void cambiar_estado() {
+    int semestreSeleccionado;
+    int cambiarEstado;
+    bool estadoBool;
+    if (estudianteSeleccionado == -1) {
         system("cls");
-        cout << "Volviendo al menu principal...\n";
+        cout << "No hay notas registradas. \n";
         Sleep(1200);
         system("cls");
         return;
-    default:
-        cout << "Opcion no valida. Intente de nuevo.\n";
     }
+	estadoBool = false;
+    while (!estadoBool) {
+		system("cls");
+        cout << "Cambiar estado del estudiante: " << registros[estudianteSeleccionado][0].nombre_estudiante << endl;
+        cout << "Seleccione el semestre para cambiar el estado (1-" << semestres << "): ";
+        cin >> semestreSeleccionado;
+        if (semestreSeleccionado < 1 || semestreSeleccionado > semestres) {
+            cout << "Semestre no valido. \n";
+            Sleep(1200);
+            system("cls");
+            continue;
+        }
+        cout << "Semestre Seleccionado: " << semestreSeleccionado << " Materia seleccionada : " << registros[estudianteSeleccionado][semestreSeleccionado - 1].asignatura << endl;
+        cout << "Estado actual: " << (registros[estudianteSeleccionado][semestreSeleccionado - 1].activo ? "Activo" : "Inactivo") << endl;
+        cout << "Desea cambiar el estado de la materia? (1 para Si, 0 para No): ";
+        cin >> cambiarEstado;
+
+        if (cambiarEstado == 1) {
+            registros[estudianteSeleccionado][semestreSeleccionado - 1].activo =
+                !registros[estudianteSeleccionado][semestreSeleccionado - 1].activo;
+            cout << "Estado cambiado exitosamente.\n";
+        }
+        else {
+            cout << "El estado no fue cambiado.\n";
+        }
+
+        cout << "Nuevo estado: "
+            << (registros[estudianteSeleccionado][semestreSeleccionado - 1].activo ? "Activo" : "Inactivo")
+            << endl;
+
+		estadoBool = true; // Marcar como válido para salir del bucle
+
+        cout << "Presione cualquier tecla para continuar...\n";
+        _getch();
+        system("cls");
     }
 }
 
@@ -261,7 +371,7 @@ int main()
             editar();
             break;
         case 4:
-            cout << "Funcionalidad de eliminar registro no implementada.\n";
+            cambiar_estado();
             break;
         case 5:
             cout << "Saliendo del programa. Vuelve Luego!\n";
